@@ -24,7 +24,7 @@
 
 ![loss](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/BEGAN_loss_niter500.png)
 
-- We found out both L_D and L_G are balanced consistancely and converged quickly, even thought network D and G are different in terms of model capacity and detailed layer specification.
+- We found out both L_D and L_G are balanced consistently and converged, even thought network D and G are different in terms of model capacity and detailed layer specification.
 
 - **M_global**
 
