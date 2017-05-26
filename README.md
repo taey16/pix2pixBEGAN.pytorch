@@ -15,8 +15,8 @@
 - **pix2pixBEGAN**
 - ```CUDA_VISIBLE_DEVICES=x python main_pix2pixBEGAN.py --dataroot /path/to/facades/train --valDataroot /path/to/facades/val --exp /path/to/a/directory/for/checkpoints```
 - Most of the parameters are the same for fair comparision.
-- The original pix2pix is modelled as a conditional GAN, however we didn't. Input samples are not given in D(Only target samples are given)
-- We used the image-buffer(analogyous to replay-buffer in DQN) in training D.
+- The original pix2pix is modelled as a conditional GAN, however we didn't. Input samples are not given in D([Only target samples are given](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/main_pix2pixBEGAN.py#L175))
+- We used the [image-buffer](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/main_pix2pixBEGAN.py#L178)(analogyous to replay-buffer in DQN) in training D.
 - Try other datasets as your need. Similar results will be found.
 
 # Training Curve(pix2pixBEGAN)
