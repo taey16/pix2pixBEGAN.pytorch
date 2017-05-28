@@ -42,7 +42,7 @@
 
 # Showing reconstruction from D and generation from G
 - (order in input, real-target, reconstructed-real, fake, reconstructed-fake) 
-![reconDandGenG](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/generated_epoch_00000499_iter00200000.png)
+![reconDandGenG](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/generated_epoch_00000998_iter00399500.png)
 
 # Reference
 - [pix2pix.pytorch](https://github.com/taey16/pix2pix.pytorch)
