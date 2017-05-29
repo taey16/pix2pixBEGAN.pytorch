@@ -31,7 +31,7 @@
 ![Mglobal](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/BEGAN_Mglobal_niter500.png)
 
 - As the author said, M_global is a good indicator for monitoring convergence.
-- [Parsing log](http://htmlpreview.github.io/?https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/pix2pixBEGAN.html): [train-log](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/train.niter399.log) file will be saved in the driectory, you specified, named as ```train.log```
+- [Parsing log](http://htmlpreview.github.io/?https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/pix2pixBEGAN.html): train-log file will be saved in the driectory, you specified, named as ```train.log```
 
 # Comaprison
 - **pix2pixGAN vs. pix2pixBEGAN**
