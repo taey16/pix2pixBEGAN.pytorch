@@ -38,11 +38,11 @@
 - ```CUDA_VISIBLE_DEVICES=x python compare.py --netG_GAN /path/to/netG.pth --netG_BEGAN /path/to/netG.pth --exp /path/to/a/dir/for/saving --tstDataroot /path/to/facades/test/```
 ![failure](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/failure.png)
 ![GANvsBEGAN](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/pix2pixGAN_vs_pix2pixBEGAN.png)
-- [Checkout more results](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/comparison.png)(order in input, real-target, fake(pix2pixBEGAN), fake(pix2pixGAN))
+- [Checkout more results](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/comparison.jpg)(order in input, real-target, fake(pix2pixBEGAN), fake(pix2pixGAN))
 
 # Showing reconstruction from D and generation from G
 - (order in input, real-target, reconstructed-real, fake, reconstructed-fake) 
-![reconDandGenG](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/generated_epoch_00000998_iter00399500.png)
+![reconDandGenG](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/generated_epoch_00000998_iter00399500.jpg)
 
 # Reference
 - [pix2pix.pytorch](https://github.com/taey16/pix2pix.pytorch)
