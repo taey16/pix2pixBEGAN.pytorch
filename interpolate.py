@@ -66,7 +66,6 @@ inputChannelSize = opt.inputChannelSize
 outputChannelSize= opt.outputChannelSize
 
 # get models
-#import pdb; pdb.set_trace()
 netG = netBEGAN.G(inputChannelSize, outputChannelSize, ngf)
 netG.apply(weights_init)
 if opt.netG != '':
@@ -92,6 +91,7 @@ val_target_cpu, val_input_cpu = val_target_cpu.cuda(), val_input_cpu.cuda()
 val_target.resize_as_(val_target_cpu).copy_(val_target_cpu)
 val_input.resize_as_(val_input_cpu).copy_(val_input_cpu)
 
+
 def interpolateZ(model, imgA, imgB, intv=20):
   N = imgA.size(1)*imgA.size(2)*imgA.size(3)
   outA_ = imgA.view(imgA.size(0), N)
@@ -109,33 +109,6 @@ def interpolateZ(model, imgA, imgB, intv=20):
 
   for i in range(intv):
     output.data[i] = model.forward(Variable(zs[i,:].unsqueeze(0).cuda(async=True), volatile=True)).data.clone()
-    """
-    out1 = model.layer1(Variable(zs[i,:].unsqueeze(0).cuda(async=True), volatile=True))
-    out2 = model.layer2(out1)
-    out3 = model.layer3(out2)
-    out4 = model.layer4(out3)
-    out5 = model.layer5(out4)
-    out6 = model.layer6(out5)
-    out7 = model.layer7(out6)
-    out8 = model.layer8(out7)
-    dout8 = model.dlayer8(out8)
-    dout8 = torch.cat([dout8, out7], 1)
-    dout7 = model.dlayer7(dout8)
-    dout7 = torch.cat([dout7, out6], 1)
-    dout6 = model.dlayer6(dout7)
-    dout6 = torch.cat([dout6, out5], 1)
-    dout5 = model.dlayer5(dout6)
-    dout5 = torch.cat([dout5, out4], 1)
-    dout4 = model.dlayer4(dout5)
-    dout4 = torch.cat([dout4, out3], 1)
-    dout3 = model.dlayer3(dout4)
-    dout3 = torch.cat([dout3, out2], 1)
-    dout2 = model.dlayer2(dout3)
-    dout2 = torch.cat([dout2, out1], 1)
-    dout1 = model.dlayer1(dout2)
-    output.data[i] = dout1.data.clone()
-    """
-
   return output
 
 interval = opt.interval
