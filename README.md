@@ -20,7 +20,7 @@
 - Try other datasets as your need. Similar results will be found.
 
 # Training Curve(pix2pixBEGAN)
-- **L_D and L_G**
+- **L_D and L_G \w BEGAN**
 
 ![loss](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/BEGAN_loss_niter500.png)
 
@@ -32,6 +32,10 @@
 
 - As the author said, M_global is a good indicator for monitoring convergence.
 - [Parsing log](http://htmlpreview.github.io/?https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/pix2pixBEGAN.html): train-log file will be saved in the driectory, you specified, named as ```train.log```
+
+- **L_D and L_G \w GAN**
+
+![BEGAN_loss](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/GAN_loss_niter400.png)
 
 # Comaprison
 - **pix2pixGAN vs. pix2pixBEGAN**
@@ -48,3 +52,6 @@
 - [pix2pix.pytorch](https://github.com/taey16/pix2pix.pytorch)
 - [BEGAN in pytorch](https://github.com/sunshineatnoon/Paper-Implementations/tree/master/BEGAN)
 - fantastic [pytorch](http://pytorch.org/docs/)
+
+# misc.
+- We apologize for your inconvenience when cloning this project. Size of resulting images are huge. please be patient.(Downloading zip file seems to need less time.)
