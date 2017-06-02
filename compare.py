@@ -9,7 +9,6 @@ import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 cudnn.benchmark = True
 cudnn.fastest = True
-import torch.optim as optim
 import torchvision.utils as vutils
 from torch.autograd import Variable
 
