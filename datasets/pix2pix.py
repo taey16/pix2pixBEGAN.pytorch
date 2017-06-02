@@ -42,7 +42,8 @@ class pix2pix(data.Dataset):
     if seed is not None:
       np.random.seed(seed)
 
-  def __getitem__(self, index):
+  def __getitem__(self, _):
+    index = np.random.randint(self.__len__(), size=1)[0]
     path = self.imgs[index]
     img = self.loader(path)
     # NOTE: img -> PIL Image
