@@ -44,6 +44,8 @@
 ![GANvsBEGAN](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/pix2pixGAN_vs_pix2pixBEGAN.png)
 - [Checkout more results](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/comparison.jpg)(order in input, real-target, fake(pix2pixBEGAN), fake(pix2pixGAN))
 - Interpolation on the input-space.
+- ```CUDA_VISIBLE_DEVICES=x python interpolate.py --tstDataroot ~/path/to/your/facades/test/ --interval 14 --exp /path/to/resulting/dir --tstBatchSize 4 --netG /path/to/your/netG_epoch_xxx.pth```
+- Upper rows: pix2pixGAN, Lower rows: pix2pixBEGAN
 ![interpolation](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/interpolated_pix2pixGAN_pix2pixBEGAN.png)
 
 # Showing reconstruction from D and generation from G
