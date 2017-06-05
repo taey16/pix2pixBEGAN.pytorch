@@ -21,11 +21,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', required=False,
   default='pix2pix',  help='')
 parser.add_argument('--tstDataroot', required=False,
-  default='/home1/taey16/storage/pix2pix/facades/test/', help='path to val dataset')
+  default='/path/to/your/pix2pix/facades/test/', help='path to val dataset')
 parser.add_argument('--mode', type=str, default='B2A', help='B2A: facade, A2B: edges2shoes')
-parser.add_argument('--tstBatchSize', type=int, default=2, help='input batch size')
-parser.add_argument('--originalSize', type=int, 
-  default=286, help='the height / width of the original input image')
+parser.add_argument('--tstBatchSize', type=int, default=2, help='the batch-size should be a even number.')
 parser.add_argument('--imageSize', type=int, 
   default=256, help='the height / width of the cropped input image to network')
 parser.add_argument('--inputChannelSize', type=int, 
@@ -51,7 +49,7 @@ print("Random Seed: ", opt.manualSeed)
 # get dataloader
 dataloader = getLoader(opt.dataset, 
                        opt.tstDataroot, 
-                       opt.originalSize, 
+                       opt.imageSize, 
                        opt.imageSize, 
                        opt.tstBatchSize, 
                        opt.workers,
@@ -108,12 +106,16 @@ def interpolateZ(model, imgA, imgB, intv=20):
   output = Variable(output)
 
   for i in range(intv):
-    output.data[i] = model.forward(Variable(zs[i,:].unsqueeze(0).cuda(async=True), volatile=True)).data.clone()
+    output.data[i] = model.forward(Variable(zs[i,:].unsqueeze(0).cuda(async=True), 
+                                   volatile=True)).data.clone()
   return output
 
 interval = opt.interval
 N = val_input.size(0)
-outputs = torch.FloatTensor((opt.tstBatchSize/2)*interval, val_target.size(1), val_target.size(2), val_target.size(3))
+outputs = torch.FloatTensor((opt.tstBatchSize/2)*interval, 
+                             val_target.size(1), 
+                             val_target.size(2), 
+                             val_target.size(3))
 for idx in range(opt.tstBatchSize / 2):
   inputA = val_input[idx,:,:,:].unsqueeze(0)
   targetA = val_target[idx,:,:,:].unsqueeze(0)
@@ -122,6 +124,5 @@ for idx in range(opt.tstBatchSize / 2):
   inputA = Variable(inputA, volatile=True)
   inputB = Variable(inputB, volatile=True)
   output = interpolateZ(netG, inputA, inputB, interval)
-  #import pdb; pdb.set_trace()
   outputs[(idx*interval):((idx+1)*interval),:].copy_(output.data.squeeze(0).cpu())
 vutils.save_image(outputs, '%s/interpolated.png' % opt.exp, nrow=interval, normalize=True)
