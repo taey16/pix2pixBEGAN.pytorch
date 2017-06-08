@@ -157,7 +157,7 @@ optimizerG = optim.Adam(netG.parameters(), lr = opt.lrG, betas = (opt.beta1, 0.9
 # NOTE training loop
 ganIterations = 0
 for epoch in range(opt.niter):
-  if epoch >= opt.annealStart:
+  if epoch > opt.annealStart:
     adjust_learning_rate(optimizerD, opt.lrD, epoch, None, opt.annealEvery)
     adjust_learning_rate(optimizerG, opt.lrG, epoch, None, opt.annealEvery)
   for i, data in enumerate(dataloader, 0):

@@ -150,7 +150,7 @@ k = 0 # control how much emphasis is put on L(G(z_D)) during gradient descent.
 M_global = AverageMeter() # 
 for epoch in range(opt.niter):
   # learning rate annealing
-  if epoch >= opt.annealStart:
+  if epoch > opt.annealStart:
     adjust_learning_rate(optimizerD, opt.lrD, epoch, None, opt.annealEvery)
     adjust_learning_rate(optimizerG, opt.lrG, epoch, None, opt.annealEvery)
   
