@@ -90,7 +90,7 @@ val_target.resize_as_(val_target_cpu).copy_(val_target_cpu)
 val_input.resize_as_(val_input_cpu).copy_(val_input_cpu)
 
 
-def interpolateZ(model, imgA, imgB, intv=20):
+def interpolateInput(model, imgA, imgB, intv=20):
   N = imgA.size(1)*imgA.size(2)*imgA.size(3)
   outA_ = imgA.view(imgA.size(0), N)
   outB_ = imgB.view(imgB.size(0), N)
@@ -123,6 +123,6 @@ for idx in range(opt.tstBatchSize / 2):
   targetB = val_target[(N-1)-idx,:,:,:].unsqueeze(0)
   inputA = Variable(inputA, volatile=True)
   inputB = Variable(inputB, volatile=True)
-  output = interpolateZ(netG, inputA, inputB, interval)
+  output = interpolateInput(netG, inputA, inputB, interval)
   outputs[(idx*interval):((idx+1)*interval),:].copy_(output.data.squeeze(0).cpu())
 vutils.save_image(outputs, '%s/interpolated.png' % opt.exp, nrow=interval, normalize=True)
