@@ -46,7 +46,7 @@ parser.add_argument('--netD', default='', help="path to netD (to continue traini
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--exp', default='sample', help='folder to output images and model checkpoints')
 parser.add_argument('--display', type=int, default=5, help='interval for displaying train-logs')
-parser.add_argument('--evalIter', type=int, default=1000, help='interval for evauating(generating) images from valDataroot')
+parser.add_argument('--evalIter', type=int, default=1000, help='interval for evauating(generating) images')
 opt = parser.parse_args()
 print(opt)
 
@@ -116,11 +116,6 @@ k = 0 # control how much emphasis is put on L(G(z_D)) during gradient descent.
 M_global = AverageMeter()
 K_avg = AverageMeter()
 for epoch in range(opt.niter):
-  # learning rate annealing
-  if epoch > opt.annealStart:
-    adjust_learning_rate(optimizerD, opt.lrD, epoch, None, opt.annealEvery)
-    adjust_learning_rate(optimizerG, opt.lrG, epoch, None, opt.annealEvery)
-  
   for i, data in enumerate(dataloader, 0):
     input_cpu, _ = data
     batch_size = input_cpu.size(0)
@@ -191,6 +186,11 @@ for epoch in range(opt.niter):
         (opt.exp, epoch, ganIterations), nrow=8, normalize=True)
       vutils.save_image(recon_real.data, '%s/epoch_%08d_iter%08d_real_recon.png' % \
         (opt.exp, epoch, ganIterations), nrow=8, normalize=True)
+
+  # learning rate annealing
+  if epoch > opt.annealStart:
+    adjust_learning_rate(optimizerD, opt.lrD, epoch, None, opt.annealEvery)
+    adjust_learning_rate(optimizerG, opt.lrG, epoch, None, opt.annealEvery)
 
   # do checkpointing
   torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (opt.exp, epoch))
