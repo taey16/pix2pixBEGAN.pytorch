@@ -29,9 +29,9 @@ parser.add_argument('--inputChannelSize', type=int,
   default=3, help='size of the input channels')
 parser.add_argument('--outputChannelSize', type=int, 
   default=3, help='size of the output channels')
-parser.add_argument('--ngf', type=int, default=64)
-parser.add_argument('--ndf', type=int, default=64)
-parser.add_argument('--hidden_size', type=int, default=128, help='bottleneck dimension of Discriminator(i.e. dimension of z)')
+parser.add_argument('--ngf', type=int, default=128)
+parser.add_argument('--ndf', type=int, default=128)
+parser.add_argument('--hidden_size', type=int, default=64, help='bottleneck dimension of Discriminator(i.e. dimension of z)')
 parser.add_argument('--niter', type=int, default=30, help='number of epochs to train for')
 parser.add_argument('--lrD', type=float, default=0.00005, help='learning rate for D')
 parser.add_argument('--lrG', type=float, default=0.00005, help='learning rate for G')
