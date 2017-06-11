@@ -5,84 +5,76 @@ import random
 import torch
 import torch.nn as nn
 import torch.backends.cudnn as cudnn
-import torch.optim as optim
-import torchvision.datasets as dset
-import torchvision.transforms as transforms
+cudnn.benchmark = True
+cudnn.fastest = True
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from models import Generator
-
+from models import BEGAN as net
 import numpy as np
-
+from misc import *
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
+parser.add_argument('--batchSize', type=int, default=12, help='input batch size')
 parser.add_argument('--imageSize', type=int, default=128, help='the height / width of the input image to network')
-parser.add_argument('--nz', type=int, default=64, help='size of the latent z vector')
-parser.add_argument('--netG', default='', help="path to netG (to continue training)")
-parser.add_argument('--outf', default='dcgan/', help='folder to output images and model checkpoints')
-parser.add_argument('--fname', default='0', help='folder to output images and model checkpoints')
-parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--ngf', type=int, default=128)
+parser.add_argument('--hidden_size', type=int, default=64, help='size of the latent z vector')
+parser.add_argument('--netG', default='', help="path to netG (to continue training)")
+parser.add_argument('--exp', default='interpolate', help='folder to output images')
+parser.add_argument('--manualSeed', type=int, default=101, help='manual seed')
+parser.add_argument('--interval', type=int, default=14, help='interval ranged from zA to zB')
 
 opt = parser.parse_args()
 print(opt)
 
-try:
-    os.makedirs(opt.outf)
-except OSError:
-    pass
+create_exp_dir(opt.exp)
 
 if opt.manualSeed is None:
-    opt.manualSeed = random.randint(1, 10000)
+  opt.manualSeed = random.randint(1, 10000)
 print("Random Seed: ", opt.manualSeed)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
 torch.cuda.manual_seed_all(opt.manualSeed)
 
-cudnn.benchmark = True
-
-###########   Load netG   ###########
 assert opt.netG != '', "netG must be provided!"
-nc = 3
-netG = Generator(nc, opt.ngf, opt.nz, opt.imageSize)
+ngf = opt.ngf
+inputChannelSize = 3
+netG = net.Decoder(inputChannelSize, ngf, opt.hidden_size)
 netG.load_state_dict(torch.load(opt.netG))
 print(netG)
 
-###########   Generate   ###########
-noise = torch.FloatTensor(opt.batchSize, opt.nz)
-noise = Variable(noise)
-noise1 = torch.FloatTensor(opt.batchSize, opt.nz)
-noise1 = Variable(noise1)
+noiseA = torch.FloatTensor(1, opt.hidden_size, 1, 1)
+noiseA = Variable(noiseA)
+noiseB = torch.FloatTensor(1, opt.hidden_size, 1, 1)
+noiseB = Variable(noiseB)
 
 netG.cuda()
-noise = noise.cuda()
-noise1 = noise1.cuda()
+noiseA = noiseA.cuda()
+noiseB = noiseB.cuda()
 
-def interpolateZ(model, imgA, imgB, imageSize=128, intv=20):
-  N = imgA.size(1)
+def interpolateZ(model, zA, zB, imageSize=128, intv=20):
+  N = zA.size(1)
+  zs = torch.cuda.FloatTensor(intv, N, 1, 1)
 
-  zs = torch.cuda.FloatTensor(intv, N)
   for n in range(N):
-    valA, valB = imgA[0,n].data[0], imgB[0,n].data[0]
+    valA, valB = zA.data[0,n,0,0], zB.data[0,n,0,0]
     values = np.linspace(valA, valB, num=intv)
-    zs[:,n].copy_(torch.from_numpy(values).cuda())
+    zs[:,n, 0, 0].copy_(torch.from_numpy(values).cuda())
 
   output = torch.cuda.FloatTensor(intv, 3, imageSize, imageSize).fill_(0)
   output = Variable(output)
   for i in range(intv):
     input = Variable(zs[i,:].unsqueeze(0), volatile=True)
     output.data[i] = model(input).data.clone()
-  return output
+  return output.data
 
-noise.data.uniform_(-1,1)
-noise1.data.uniform_(-1,1)
-interval=14
-outputs = interpolateZ(netG, noise, noise1, imageSize=opt.imageSize, intv=interval)
-vutils.save_image(outputs.data, '%s/interpolated_%s.png' % (opt.outf, opt.fname), nrow=interval, normalize=True)
-"""
-fake = netG(noise)
-vutils.save_image(fake.data,
-            '%s/samples.png' % (opt.outf),
-            normalize=True)
-"""
+
+outputs = torch.FloatTensor(opt.batchSize*opt.interval, 
+                            3, opt.imageSize, opt.imageSize)
+for b in range(opt.batchSize):
+  noiseA.data.uniform_(-1,1)
+  noiseB.data.uniform_(-1,1)
+  outputs[b*opt.interval:b*opt.interval+opt.interval,:,:,:] = \
+    interpolateZ(netG, noiseA, noiseB, imageSize=opt.imageSize, intv=opt.interval)
+vutils.save_image(outputs, 
+                  '%s/interpolated_samples.png' % opt.exp, 
+                  nrow=opt.interval, normalize=True)
