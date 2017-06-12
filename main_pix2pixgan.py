@@ -60,6 +60,7 @@ create_exp_dir(opt.exp)
 opt.manualSeed = 101
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
+torch.cuda.manual_seed_all(opt.manualSeed)
 print("Random Seed: ", opt.manualSeed)
 
 # get dataloader

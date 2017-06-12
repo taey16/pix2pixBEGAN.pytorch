@@ -55,6 +55,7 @@ opt.manualSeed = 101
 #opt.manualSeed = random.randint(1, 10000)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
+torch.cuda.manual_seed_all(opt.manualSeed)
 print("Random Seed: ", opt.manualSeed)
 
 # NOTE get dataloader
