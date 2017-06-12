@@ -50,12 +50,11 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-  def __init__(self, nc, ngf, hidden_size, condition=False, condition_size=0):
+  def __init__(self, nc, ngf, hidden_size):
     super(Decoder, self).__init__()
-    self.condition = condition
 
     # 1
-    self.decode = nn.ConvTranspose2d(hidden_size+condition_size, ngf, kernel_size=8,stride=1,padding=0)
+    self.decode = nn.ConvTranspose2d(hidden_size, ngf, kernel_size=8,stride=1,padding=0)
     # 8
     self.dconv6 = deconv_block(ngf, ngf)
     # 16
@@ -74,9 +73,7 @@ class Decoder(nn.Module):
                                 nn.Conv2d(ngf, nc,kernel_size=3, stride=1,padding=1),
                                 nn.Tanh())
 
-  def forward(self, x, condition_vec=None):
-    if self.condition:
-      x = torch.cat([x, condition_vec], 1)
+  def forward(self, x):
     x = self.decode(x) 
     x = self.dconv6(x) 
     x = self.dconv5(x) 
@@ -88,15 +85,15 @@ class Decoder(nn.Module):
 
 
 class D(nn.Module):
-  def __init__(self, nc, ndf, ngf, hidden_size, condition=False, condition_size=0):
+  def __init__(self, nc, ndf, ngf, hidden_size):
     super(D, self).__init__()
 
     enc = Encoder(nc, ndf, hidden_size)
-    dec = Decoder(nc, ngf, hidden_size, condition, condition_size)
+    dec = Decoder(nc, ngf, hidden_size)
     self.encoder = enc
     self.decoder = dec
 
-  def forward(self, x, condition_vec=None):
+  def forward(self, x):
     h = self.encoder(x)
-    out = self.decoder(h, condition_vec)
+    out = self.decoder(h)
     return out
