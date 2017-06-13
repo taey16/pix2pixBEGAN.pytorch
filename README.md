@@ -56,6 +56,7 @@
 # Reference
 - [pix2pix.pytorch](https://github.com/taey16/pix2pix.pytorch)
 - [BEGAN in pytorch](https://github.com/sunshineatnoon/Paper-Implementations/tree/master/BEGAN)
+- [A simple conditional version of BEGAN](https://github.com/taey16/CBEGAN)
 - fantastic [pytorch](http://pytorch.org/docs/)
 
 # misc.
