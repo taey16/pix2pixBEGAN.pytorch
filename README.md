@@ -37,7 +37,7 @@
 
 ![BEGAN_loss](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/GAN_loss_niter400.png)
 
-# Comaprison
+# Comparison
 - **pix2pixGAN vs. pix2pixBEGAN**
 - ```CUDA_VISIBLE_DEVICES=x python compare.py --netG_GAN /path/to/netG.pth --netG_BEGAN /path/to/netG.pth --exp /path/to/a/dir/for/saving --tstDataroot /path/to/facades/test/```
 ![failure](https://github.com/taey16/pix2pixBEGAN.pytorch/blob/master/imgs/failure.png)
