@@ -20,17 +20,17 @@ def deconv_block(in_dim,out_dim):
 def blockUNet(in_c, out_c, name, transposed=False, bn=True, relu=True, dropout=False):
   block = nn.Sequential()
   if relu:
-    block.add_module('%s.relu' % name, nn.ReLU(inplace=True))
+    block.add_module('%s_relu' % name, nn.ReLU(inplace=True))
   else:
-    block.add_module('%s.leakyrelu' % name, nn.LeakyReLU(0.2, inplace=True))
+    block.add_module('%s_leakyrelu' % name, nn.LeakyReLU(0.2, inplace=True))
   if not transposed:
-    block.add_module('%s.conv' % name, nn.Conv2d(in_c, out_c, 4, 2, 1, bias=False))
+    block.add_module('%s_conv' % name, nn.Conv2d(in_c, out_c, 4, 2, 1, bias=False))
   else:
-    block.add_module('%s.tconv' % name, nn.ConvTranspose2d(in_c, out_c, 4, 2, 1, bias=False))
+    block.add_module('%s_tconv' % name, nn.ConvTranspose2d(in_c, out_c, 4, 2, 1, bias=False))
   if bn:
-    block.add_module('%s.bn' % name, nn.BatchNorm2d(out_c))
+    block.add_module('%s_bn' % name, nn.BatchNorm2d(out_c))
   if dropout:
-    block.add_module('%s.dropout' % name, nn.Dropout2d(0.5, inplace=True))
+    block.add_module('%s_dropout' % name, nn.Dropout2d(0.5, inplace=True))
   return block
 
 
@@ -161,9 +161,9 @@ class G(nn.Module):
     name = 'dlayer%d' % layer_idx
     dlayer1 = nn.Sequential()
     d_inc = nf*2
-    dlayer1.add_module('%s.relu' % name, nn.ReLU(inplace=True))
-    dlayer1.add_module('%s.tconv' % name, nn.ConvTranspose2d(d_inc, output_nc, 4, 2, 1, bias=False))
-    dlayer1.add_module('%s.tanh' % name, nn.Tanh())
+    dlayer1.add_module('%s_relu' % name, nn.ReLU(inplace=True))
+    dlayer1.add_module('%s_tconv' % name, nn.ConvTranspose2d(d_inc, output_nc, 4, 2, 1, bias=False))
+    dlayer1.add_module('%s_tanh' % name, nn.Tanh())
 
     self.layer1 = layer1
     self.layer2 = layer2
